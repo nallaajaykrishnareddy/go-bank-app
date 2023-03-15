@@ -1,4 +1,4 @@
-name: Run unit tests
+name: build and push to ecr
 
 on:
   push:
@@ -10,16 +10,21 @@ jobs:
   build:
     name: build image
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
 
     steps:
     - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
+    - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-       role-to-assume: arn:aws:iam::196723278287:user/github-actions
-       aws-region: ap-south-1
+        role-to-assume: arn:aws:iam::196723278287:role/fullaccess
+        aws-region: ap-south-1
+
 
     - name: Login to Amazon ECR Private
       id: login-ecr
